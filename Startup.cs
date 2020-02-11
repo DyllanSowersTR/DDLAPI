@@ -28,7 +28,6 @@ namespace DDL
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // requires using Microsoft.Extensions.Options
             services.Configure<DDLDatabaseSettings>(
                 Configuration.GetSection(nameof(DDLDatabaseSettings)));
 

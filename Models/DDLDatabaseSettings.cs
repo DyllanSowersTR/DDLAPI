@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+// Used to store the appsettings.json file DDLDatabaseSettings property values
 namespace DDL.Models
 {
     public class DDLDatabaseSettings : IDDLDatabaseSettings

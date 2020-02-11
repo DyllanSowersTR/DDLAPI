@@ -21,13 +21,18 @@ namespace DDL.Models
         public string Id { get; set; }
 
         public string GroupName { get; set; }
-        public User[] UserIds { get; set; } 
 
-        public Restaurant[] Restaurants { get; set; }
+        //[BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string[] UserIds { get; set; }
+
+        //[BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string[] Restaurants { get; set; }
 
         public int MaxDistance { get; set; }
 
-        public int RestaurantType { get; set; }
+        public string[] RestaurantTypePreference { get; set; }
 
     }
 }
