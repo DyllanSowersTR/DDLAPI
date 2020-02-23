@@ -21,6 +21,7 @@ namespace DDL
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            GlobalAppData.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -34,7 +35,6 @@ namespace DDL
             services.AddSingleton<IDDLDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DDLDatabaseSettings>>().Value);
 
-            services.AddSingleton<RestaurantService>();
             services.AddSingleton<UserService>();
             services.AddSingleton<GroupService>();
 
