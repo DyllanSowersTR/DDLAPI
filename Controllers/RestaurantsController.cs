@@ -14,6 +14,7 @@ namespace DDL.Controllers
     [ApiController]
     public class RestaurantsController : ControllerBase
     {
+        [HttpGet]
         public async Task<OkObjectResult> Get([FromQuery] RestaurantFilter filter)
         {
             List<Restaurant> restaurants = await YelpQueryService.GetRestaurants(filter);
