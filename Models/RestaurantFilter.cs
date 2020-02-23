@@ -19,38 +19,29 @@ namespace DDL.Models
             StringBuilder sb = new StringBuilder();
 
             string querySeparator = "?";
-
-            // TODO: This is gross. Clean up later
-            
-            if (SearchTerm != null)
+            foreach (KeyValuePair<string, string> filter in FiltersAsStringDictionary())
             {
-                sb.Append(querySeparator);
-                sb.Append($"term={SearchTerm}");
-                querySeparator = "&";
-            }
-
-            if (Location != null)
-            {
-                sb.Append(querySeparator);
-                sb.Append($"location={Location}");
-                querySeparator = "&";
-            }
-
-            if (LocationRadius != 0)
-            {
-                sb.Append(querySeparator);
-                sb.Append($"radius={LocationRadius}");
-                querySeparator = "&";
-            }
-
-            if (Categories != null)
-            {
-                sb.Append(querySeparator);
-                sb.Append($"categories={Categories}");
-                querySeparator = "&";
+                if (filter.Value != null)
+                {
+                    sb.Append(querySeparator);
+                    sb.Append($"{filter.Key}={filter.Value}");
+                    querySeparator = "&";
+                }
             }
 
             return sb.ToString();
+        }
+
+        private Dictionary<string, string> FiltersAsStringDictionary()
+        {
+            Dictionary<string, string> filters = new Dictionary<string, string>();
+
+            filters.Add("term", SearchTerm);
+            filters.Add("location", Location);
+            filters.Add("radius", LocationRadius != 0 ? LocationRadius.ToString() : null);
+            filters.Add("categories", Categories);
+
+            return filters;
         }
     }
 }

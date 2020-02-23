@@ -41,7 +41,7 @@ namespace DDL.Services
                 restaurant.Name = business.name;
 
                 Location location = new Location();
-                location.StreetAddress = $"{business.location.address1} {business.location.address2} {business.location.address3}";
+                location.StreetAddress = $"{business.location.address1} {business.location.address2} {business.location.address3}".Trim();
                 location.City = business.location.city;
                 location.State = business.location.state;
                 location.Zipcode = business.location.zip_code;
