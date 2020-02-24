@@ -21,8 +21,7 @@ namespace DDL.Services
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", GlobalAppData.Configuration["YelpConfig:Token"]);
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append("https://api.yelp.com/v3/businesses/search");
+            StringBuilder stringBuilder = new StringBuilder("https://api.yelp.com/v3/businesses/search");
 
             // TODO: Good place to use the strategy pattern here? Inject a formatter? So could FormatForUrlParameters, and just append that to the yelp url. Look at how Google Maps API is queried. Could have API-specific (yelp, maps, etc.) query formatters
             stringBuilder.Append(filter.FormatForUrlParameters());
@@ -30,31 +29,37 @@ namespace DDL.Services
             HttpResponseMessage response = await httpClient.GetAsync(stringBuilder.ToString());
             string responseBody = await response.Content.ReadAsStringAsync();
 
-            dynamic jsonResponse = JsonConvert.DeserializeObject(responseBody); // TODO: Need to do property existance checking on dynamic objects
+            dynamic jsonResponse = JsonConvert.DeserializeObject(responseBody);
 
-            foreach (dynamic business in jsonResponse.businesses)
+            if (jsonResponse?.businesses != null) // TODO: Log error if null
             {
-                //restaurants.Add(JsonConvert.DeserializeObject<Restaurant>(business));
-                // TODO: Can the below be moved to a custom deserializer so something close to just the above code can be ran here
-
-                Restaurant restaurant = new Restaurant();
-                restaurant.Name = business.name;
-
-                Location location = new Location();
-                location.StreetAddress = $"{business.location.address1} {business.location.address2} {business.location.address3}".Trim();
-                location.City = business.location.city;
-                location.State = business.location.state;
-                location.Zipcode = business.location.zip_code;
-                restaurant.Location = location;
-
-                foreach (dynamic category in business.categories)
+                foreach (dynamic business in jsonResponse.businesses)
                 {
-                    restaurant.Categories.Add((string) category.alias);
+                    //restaurants.Add(JsonConvert.DeserializeObject<Restaurant>(business));
+                    // TODO: Can the below be moved to a custom deserializer so something close to just the above code can be ran here
+
+                    Restaurant restaurant = new Restaurant();
+                    restaurant.Name = business?.name;
+
+                    Location location = new Location();
+                    location.StreetAddress = $"{business?.location?.address1} {business?.location?.address2} {business?.location?.address3}".Trim();
+                    location.City = business?.location?.city;
+                    location.State = business?.location?.state;
+                    location.Zipcode = business?.location?.zip_code;
+                    restaurant.Location = location;
+
+                    if (business?.categories != null) // TODO: Log error if null
+                    {
+                        foreach (dynamic category in business.categories)
+                        {
+                            restaurant.Categories.Add((string)category?.alias);
+                        }
+                    }
+                    
+                    restaurants.Add(restaurant);
                 }
-
-                restaurants.Add(restaurant);
             }
-
+            
             // TODO: Max results. Yelp defaults to 20, max is 50. We can request up to 1000 from Yelp by navigating their pagination with the offset parameter
 
             return restaurants;
