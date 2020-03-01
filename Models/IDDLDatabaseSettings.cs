@@ -8,14 +8,9 @@ namespace DDL.Models
 {
     public interface IDDLDatabaseSettings
     {
-        string RestaurantCollectionName { get; set; }
-
-        string GroupCollectionName { get; set; }
-
-        string UserCollectionName { get; set; }
-
+        string VotingGroupsCollectionName { get; set; }
+        string UsersCollectionName { get; set; }
         string ConnectionString { get; set; }
-
         string DatabaseName { get; set; }
     }
 }

@@ -8,9 +8,8 @@ namespace DDL.Models
 {
     public class DDLDatabaseSettings : IDDLDatabaseSettings
     {
-        public string RestaurantCollectionName { get; set; }
-        public string UserCollectionName { get; set; }
-        public string GroupCollectionName { get; set; }
+        public string UsersCollectionName { get; set; }
+        public string VotingGroupsCollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }

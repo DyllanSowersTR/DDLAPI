@@ -3,30 +3,27 @@ using DDL.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
-/* For handling CRUD operations for User 
- * Supports GET, POST, PUT, and DELETE HTTP requests
- */
 namespace DDL.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
-        private readonly UserService _UserService;
+        private readonly UserService UserService;
 
-        public UserController(UserService UserService)
+        public UsersController(UserService userService)
         {
-            _UserService = UserService;
+            UserService = userService;
         }
 
         [HttpGet]
         public ActionResult<List<User>> Get() =>
-            _UserService.Get();
+            UserService.Get();
 
         [HttpGet("{id:length(24)}", Name = "GetUser")]
         public ActionResult<User> Get(string id)
         {
-            var User = _UserService.Get(id);
+            var User = UserService.Get(id);
 
             if (User == null)
             {
@@ -39,7 +36,7 @@ namespace DDL.Controllers
         [HttpPost]
         public ActionResult<User> Create(User User)
         {
-            _UserService.Create(User);
+            UserService.Create(User);
 
             return CreatedAtRoute("GetUser", new { id = User.Id.ToString() }, User);
         }
@@ -47,14 +44,14 @@ namespace DDL.Controllers
         [HttpPut("{id:length(24)}")]
         public IActionResult Update(string id, User UserIn)
         {
-            var User = _UserService.Get(id);
+            var User = UserService.Get(id);
 
             if (User == null)
             {
                 return NotFound();
             }
 
-            _UserService.Update(id, UserIn);
+            UserService.Update(id, UserIn);
 
             return NoContent();
         }
@@ -62,14 +59,14 @@ namespace DDL.Controllers
         [HttpDelete("{id:length(24)}")]
         public IActionResult Delete(string id)
         {
-            var User = _UserService.Get(id);
+            var User = UserService.Get(id);
 
             if (User == null)
             {
                 return NotFound();
             }
 
-            _UserService.Remove(User.Id);
+            UserService.Remove(User.Id);
 
             return NoContent();
         }

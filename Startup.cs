@@ -36,7 +36,7 @@ namespace DDL
                 sp.GetRequiredService<IOptions<DDLDatabaseSettings>>().Value);
 
             services.AddSingleton<UserService>();
-            services.AddSingleton<GroupService>();
+            services.AddSingleton<VotingGroupService>();
 
             services.AddControllers();
         }
