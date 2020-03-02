@@ -21,16 +21,6 @@ namespace DDL.Models
 
         public string GroupName { get; set; }
 
-        //[BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string[] UserIds { get; set; }
-
-        //[BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string[] Restaurants { get; set; }
-
-        public int MaxDistance { get; set; }
-
-        public string[] RestaurantTypePreference { get; set; }
+        public List<RestaurantWithVoters> Restaurants { get; set; } = new List<RestaurantWithVoters>();
     }
 }
